@@ -2,7 +2,7 @@
 $(document).ready(function(){
 
   // YOU NEED TO CHANGE THIS ACCORDING TO WHERE YOU PLACED loader.js!
-  var loader_js_location = "file:///C:/Projects/Javascript/loader/";
+  var loader_js_location = "file:///C:/Projects/Javascript/loader.js/";
 
 
   /****************************************************
