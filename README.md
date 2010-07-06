@@ -1,9 +1,11 @@
-= loader.js =
+loader.js
+=========
 
 This is a script loader for in-browser javascript (similar to [RequireJS](http://requirejs.org/)).
 
 
-== Features ==
+Features
+========
 
 Load a single file or multiple files.
     Loader.load("util.js");
