@@ -11,7 +11,8 @@ Load a single file or multiple files.
     Loader.load("util.js");
     Loader.load(["util.js", "i18n.js", "tetris.js"]);
 
-Fire a callback after a file is loaded. (This is different from RequireJS. More on this later.)
+Fire a callback after a file is loaded.
+(This is different from RequireJS in that you need to specifically inform Loader that your file has been loaded.)
     Loader.load("fish.js", function(){
       Fish.splash(); 
     });
