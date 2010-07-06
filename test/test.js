@@ -214,6 +214,25 @@ $(document).ready(function(){
     ok(callback_added);
   });
 
+  test("_load_file (when no callback) attaches", function(){
+    var file_attached = false;
+    Mock.make("Loader.attach", function(filename){
+      file_attached = true;
+    });
+    Loader._load_file("script.js");
+    ok(file_attached);
+  });
+
+  test("_load_file (when no callback) doesn't attach twice", function(){
+    var attached = 0;
+    Mock.make("Loader.attach", function(filename){
+      attached++;
+    });
+    Loader._load_file("script.js");
+    Loader._load_file("script.js");
+    equals(1, attached);
+  });
+
 
   test("done fires and deletes all callbacks for a filename", function(){
     var callback_one_called = false;

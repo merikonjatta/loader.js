@@ -133,24 +133,33 @@
     // Attach a file and register a callback. 
     // Takes a single filename string and a callback function.
     _load_file: function(filename, callback){
-      // Add the callback
-      Loader._add_callback(filename, callback);
-      
-      // Already loaded?
-      if(Loader.loaded[filename]) {
-        Loader.done(filename);
-        return;
-      }
+      if (callback){
+        // Add the callback
+        Loader._add_callback(filename, callback);
+        
+        // Already loaded?
+        if(Loader.loaded[filename]) {
+          Loader.done(filename);
+          return;
+        }
 
-      // Already trying to load?
-      if (Loader.loading[filename]) {
-        return;
-      }
+        // Already trying to load?
+        if (Loader.loading[filename]) {
+          return;
+        }
 
-      // New file?
-      Loader.loading[filename] = true;
-      Loader.attach(filename+Loader.filename_postfix);
-      return;
+        // New file?
+        Loader.loading[filename] = true;
+        Loader.attach(filename+Loader.filename_postfix);
+        return;
+
+      // no callback?
+      } else {
+        if (!Loader.loaded[filename]){
+          Loader.loaded[filename] = true;
+          Loader.attach(filename+Loader.filename_postfix);
+        }
+      }
     },
 
     // Add a callback for a file.
