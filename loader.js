@@ -145,7 +145,7 @@
         }
 
         // Already trying to load?
-        if (Loader.loading[filename]) {
+        if (Loader.loading[filename] || Loader.loaded_without_callbacks[filename]) {
           return;
         }
 
@@ -156,7 +156,7 @@
 
       // no callback?
       } else {
-        if (!Loader.loaded_without_callbacks[filename]){
+        if (!Loader.loading[filename] && !Loader.loaded[filename] && !Loader.loaded_without_callbacks[filename]){
           Loader.loaded_without_callbacks[filename] = true;
           Loader.attach(filename+Loader.filename_postfix);
         }

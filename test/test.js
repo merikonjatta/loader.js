@@ -223,15 +223,38 @@ $(document).ready(function(){
     ok(file_attached);
   });
 
-  test("_load_file (when no callback) doesn't attach twice", function(){
+
+  test("_load_file (with no callback) doesn't attach twice", function(){
     var attached = 0;
     Mock.make("Loader.attach", function(filename){
       attached++;
     });
     Loader._load_file("script.js");
     Loader._load_file("script.js");
-    equals(1, attached);
+    equals(attached, 1);
   });
+
+
+  test("_load_file (with callback) doesn't double-attach files attached without callback", function(){
+    var attached = 0;
+    Mock.make("Loader.attach", function(filename){
+      attached++;
+    });
+    Loader._load_file("script.js");
+    Loader._load_file("script.js", function(){});
+    equals(attached, 1);
+  });
+
+  test("_load_file (with no callback) doesn't double-attach files attached with callback", function(){
+    var attached = 0;
+    Mock.make("Loader.attach", function(filename){
+      attached++;
+    });
+    Loader._load_file("script.js", function(){});
+    Loader._load_file("script.js");
+    equals(attached, 1);
+  });
+
 
 
   test("done fires and deletes all callbacks for a filename", function(){
