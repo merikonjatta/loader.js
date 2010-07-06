@@ -11,6 +11,7 @@
     this.callbacks        = {};
     this.loading          = {};
     this.loaded           = {};
+    this.loaded_without_callbacks = {};
 
     // Determine the base URL and retrieve the head element.
     this.head = document.getElementsByTagName("head")[0] || document.documentElement;
@@ -155,8 +156,8 @@
 
       // no callback?
       } else {
-        if (!Loader.loaded[filename]){
-          Loader.loaded[filename] = true;
+        if (!Loader.loaded_without_callbacks[filename]){
+          Loader.loaded_without_callbacks[filename] = true;
           Loader.attach(filename+Loader.filename_postfix);
         }
       }
