@@ -9,9 +9,10 @@
     this.head             = null;
     this.base_url         = null;
     this.callbacks        = {};
-    this.loading          = {};
-    this.loaded           = {};
-    this.loaded_without_callbacks = {};
+    this.status           = {};
+    this.status_waiting   = "waiting";
+    this.status_attached  = "attached";
+    this.status_done      = "done";
 
     // Determine the base URL and retrieve the head element.
     this.head = document.getElementsByTagName("head")[0] || document.documentElement;
@@ -122,8 +123,7 @@
      *   filename: A filename String
      */
     done: function(filename){
-      Loader.loaded[filename] = true;
-      Loader.loading[filename] = false;
+      Loader.status[filename] = Loader.status_done;
       var callbacks = Loader.callbacks[filename];
       if (!callbacks){ return; }
       while(callbacks.length>0){
@@ -134,30 +134,32 @@
     // Attach a file and register a callback. 
     // Takes a single filename string and a callback function.
     _load_file: function(filename, callback){
+      var status = Loader.status[filename];
+
       if (callback){
         // Add the callback
         Loader._add_callback(filename, callback);
         
         // Already loaded?
-        if(Loader.loaded[filename]) {
+        if(status===Loader.status_done) {
           Loader.done(filename);
           return;
         }
 
         // Already trying to load?
-        if (Loader.loading[filename] || Loader.loaded_without_callbacks[filename]) {
+        if (status===Loader.status_waiting || status===Loader.status_attached) {
           return;
         }
 
         // New file?
-        Loader.loading[filename] = true;
+        Loader.status[filename] = Loader.status_waiting;
         Loader.attach(filename+Loader.filename_postfix);
         return;
 
       // no callback?
       } else {
-        if (!Loader.loading[filename] && !Loader.loaded[filename] && !Loader.loaded_without_callbacks[filename]){
-          Loader.loaded_without_callbacks[filename] = true;
+        if (status===undefined){
+          Loader.status[filename] = Loader.status_attached;
           Loader.attach(filename+Loader.filename_postfix);
         }
       }

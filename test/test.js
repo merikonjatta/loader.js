@@ -171,13 +171,13 @@ $(document).ready(function(){
     Loader._load_file("script.js", cb);
     ok(callback_added,                                      "Callback added?");
     ok(file_attached,                                       "File attached?");
-    equals(Loader.loading["script.js"], true,               "Loading flag set?");
+    equals(Loader.status["script.js"], Loader.status_waiting, "Loading flag set?");
   });
 
 
   test("_load_file (when loading file) adds a callback but doesn't attach", function(){
     var cb = function(){};
-    Loader.loading["script.js"] = true;
+    Loader.status["script.js"] = Loader.status_waiting;
 
     var callback_added = false;
     Mock.make("Loader._add_callback", function(filename, callback){
