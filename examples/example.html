@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>wait_for example</title>
+    <script src="../loader.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <h1>Loader.js example</h1>
+    <div style="border:1px solid #999; padding:10px; font-family:monospace;" id="log"></div>
+
+    <script type="text/javascript">
+      var logelem = document.getElementById("log");
+      window.log = function(str){
+        logelem.innerHTML+=str+"<br />";
+      };
+    </script>
+
+
+    <script type="text/javascript">
+      // Load a file. The path is relative to loader.js
+      Loader.load("examples/a.js");
+
+      // If the script path starts with "/" or contains "://",
+      // then the unmodified path will be used.
+      Loader.load("http://www.google.com/jsapi?key=ABQIAAAAzpjvN1hRnKjbRNsz6AbIYxT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSo1HRdh19cKyilR5sG8SouKDX6mA");
+
+      // Load multiple files.
+      Loader.load(["examples/b.js", "examples/b.js"]);
+
+      // Load a file, then execute a callback when it's completely loaded.
+      // You need to call Loader.done("examples/c.js"); from c.js
+      Loader.load("examples/c.js", function(){
+          log("[example.html] I know that c.js has been loaded.");
+      });
+
+      // If you can't modify the files to be loaded, use the alternative: Loader.wait_for().
+      // wait_for will continually test for an expression until it becomes true.
+      // A common usage is to test for a global object that the script will define.
+      // Any errors that occured when evaluating the string is suppressed.
+      Loader.load("examples/d.js");
+      Loader.wait_for("MyLibD", function(){
+        log("[example.html] I know that MyLibD is defined.");
+      });
+
+      // wait_for will time out after a certain period (default: 7 seconds)
+      // The timeout can be changed.
+      Loader.wait_for.timeout = 1*1000;
+      Loader.wait_for("NonExistentLib", function(){
+        log("[example.html] I know that NonExistentLib is defined.");
+      });
+      // You can set Loader.wait_for.throw_errors=true; to make it throw errors on timeout.
+
+      
+      // Now we'll try loading jquery.
+      Loader.load("http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js");
+      Loader.wait_for("$", function(){
+        log("[example.html] jQuery is defined.");
+      });
+      
+
+      //wait_for(2, function(){});
+      //wait_for("A", "function(){}");
+      //wait_for("D", function(){});
+    </script>
+  </body>
+</html>
